@@ -9,7 +9,7 @@ ONE_DAY = 86400
 
 
 MSG_TEMPLATE = """\
-Hello!
+Hello{salutation}!
 
 I am the friendly conda-forge-daemon vote bot. :)
 
@@ -20,7 +20,7 @@ See below for more information about this vote.
 Cheers,
 conda-forge-daemon vote bot
 
-Vote/candidate information:
+Vote details:
 {blurb}
 """
 
@@ -83,11 +83,18 @@ def process_config(config):
 
     if title is not None and timing is not None:
         msg = MSG_TEMPLATE.format(
+            salutation=" @room",
             title=config["title"],
             timing=timing,
             blurb=config["blurb"]
         )
         send_matrix_message(msg)
+        msg = MSG_TEMPLATE.format(
+            salutation="",
+            title=config["title"],
+            timing=timing,
+            blurb=config["blurb"]
+        )
         send_email_message(msg, title)
 
 
