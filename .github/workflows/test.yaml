@@ -43,3 +43,5 @@ jobs:
         env:
           MATRIX_TOKEN: ${{ secrets.MATRIX_TOKEN }}
           MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
