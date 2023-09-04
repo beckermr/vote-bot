@@ -8,9 +8,9 @@ from email.message import EmailMessage
 ONE_DAY = 86400
 
 
-def send_email_message(msg, title, dest):
+def send_email_message(body, title, dest):
     msg = EmailMessage()
-    msg.set_content(msg)
+    msg.set_content(body)
     msg['Subject'] = title
     msg['From'] = os.environ["EMAIL"]
     msg['To'] = dest
