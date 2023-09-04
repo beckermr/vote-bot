@@ -3,15 +3,23 @@ import time
 import yaml
 import glob
 import smtplib
+from email.message import EmailMessage
 
 ONE_DAY = 86400
 
 
-def send_email_message(msg, dest):
+def send_email_message(msg, title, dest):
+    msg = EmailMessage()
+    msg.set_content(msg)
+
+    msg['Subject'] = title
+    msg['From'] = os.environ["EMAIL"]
+    msg['To'] = dest
+
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
     s.login(os.environ["EMAIL"], os.environ["EMAIL_PASSWORD"])
-    s.sendmail(os.environ["EMAIL"], dest, msg)
+    s.send_message(msg)
     s.quit()
 
 
@@ -49,6 +57,7 @@ def process_config(config):
 
 The vote '{title}' has started! Please check your email for instructions.
 """.format(title=config["title"])
+        title = "Vote started: %s" % config["title"]
     elif curr_time - midpoint >= 0 and curr_time - midpoint <= 1.5 * ONE_DAY:
         msg = """\
 @room Hello! I am the friendly conda-forge-daemon vote bot. :)
@@ -56,6 +65,7 @@ The vote '{title}' has started! Please check your email for instructions.
 The vote '{title}' is half-way done! If you have not yet voted, please
 check your email for instructions and vote!
 """.format(title=config["title"])
+        title = "Vote half-way done: %s" % config["title"]
     elif end_time - curr_time <= 1.5 * ONE_DAY and end_time >= curr_time:
         msg = """\
 @room Hello! I am the friendly conda-forge-daemon vote bot. :)
@@ -63,11 +73,12 @@ check your email for instructions and vote!
 The vote '{title}' is will end in approximately one day! If you have not
 yet voted, please check your email for instructions and vote!
 """.format(title=config["title"])
+        title = "Vote ending soon: %s" % config["title"]
 
     if msg is not None:
         send_matrix_message(msg)
         dest = "becker.mr@gmail.com"
-        send_email_message(msg, dest)
+        send_email_message(msg, title, dest)
 
 
 if __name__ == "__main__":
