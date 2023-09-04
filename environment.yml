@@ -4,7 +4,3 @@ channels:
 dependencies:
   - matrix_client
   - pyyaml
-  - pytest
-  - flake8
-  - ruff
-  - black

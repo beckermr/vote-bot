@@ -31,7 +31,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: mamba-org/setup-micromamba@v1
+    - name: setup python
+      uses: mamba-org/setup-micromamba@v1
       with:
         environment-file: ${{ github.action_path }}/environment.yml
         init-shell: bash
@@ -42,7 +43,7 @@ runs:
           channels:
             - conda-forge
 
-    - name: test
+    - name: run vote bot
       shell: bash -l {0}
       run: |
         python ${{ github.action_path }}/vote_bot.py

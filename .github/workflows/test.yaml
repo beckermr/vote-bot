@@ -18,35 +18,29 @@ jobs:
     name: tests
     runs-on: "ubuntu-latest"
     steps:
-      - name: cancel previous runs
-        uses: styfle/cancel-workflow-action@0.6.0
-        with:
-          access_token: ${{ github.token }}
-
       - uses: actions/checkout@v3
 
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-file: environment.yml
-          init-shell: bash
-          cache-environment: true
-          post-cleanup: 'all'
-          condarc: |
-            channels:
-              - conda-forge
-
-      - name: test
-        shell: bash -l {0}
+      - name: make test vote
         run: |
-          python make_test_vote.py
-          python vote_bot.py
-        env:
-          MATRIX_TOKEN: ${{ secrets.MATRIX_TOKEN }}
-          MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
-          MATRIX_HOME_SERVER: "https://matrix-client.matrix.org"
-          EMAIL: ${{ secrets.EMAIL }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_SMTP_SERVER: smtp.gmail.com
-          EMAIL_SMTP_PORT: 587
-          VOTE_NOTICE_EMAIL: becker.mr@gmail.com
-          VOTE_DIRECTORY: votes
+          mkdir -p votes
+          start=`date +%s`
+
+          echo "title: Matt for conda-forge Bot Master
+          start_time: ${start}
+          duration: 10
+          blurb: |
+            Matt is a great guy, and he should be the bot master for conda-forge.
+            ^ LOL copilot wrote this for me!
+          " > votes/test.yaml
+
+      - uses: .
+        with:
+          matrix_token: ${{ secrets.MATRIX_TOKEN }}
+          matrix_room: ${{ secrets.MATRIX_ROOM }}
+          matrix_home_server: "https://matrix-client.matrix.org"
+          email: ${{ secrets.EMAIL }}
+          email_password: ${{ secrets.EMAIL_PASSWORD }}
+          email_smtp_server: smtp.gmail.com
+          email_smtp_port: 587
+          vote_notice_email: becker.mr@gmail.com
+          vote_directory: votes
