@@ -1,4 +1,4 @@
-name: test
+name: vote-bot
 channels:
   - conda-forge
 dependencies:

@@ -1,0 +1,58 @@
+name: conda-forge-vote-bot
+description: Sends a series of notices for conda-forge-style votes.
+inputs:
+  matrix_token:
+    description: 'token for matrix user to that sends the vote reminder'
+    required: true
+  matrix_room:
+    description: 'destination room for the vote reminder'
+    required: true
+  matrix_home_server:
+    description: 'home server for the matrix user'
+    required: true
+  email:
+    description: 'email address to use to send the vote reminder'
+    required: true
+  email_password:
+    description: 'password for the email address to use to send the vote reminder'
+    required: true
+  email_smtp_server:
+    description: 'smtp server for the email address to use to send the vote reminder'
+    required: true
+  email_smtp_port:
+    description: 'smtp port for the email address to use to send the vote reminder'
+    required: true
+  vote_notice_email:
+    description: 'email address to send the vote reminder to'
+    required: true
+  vote_directory:
+    description: 'directory with the vote YAML'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-file: ${{ github.action_path }}/environment.yml
+        init-shell: bash
+        cache-environment: true
+        environment-name: vote-bot
+        post-cleanup: 'all'
+        condarc: |
+          channels:
+            - conda-forge
+
+    - name: test
+      shell: bash -l {0}
+      run: |
+        python ${{ github.action_path }}/vote_bot.py
+      env:
+        MATRIX_TOKEN: ${{ inputs.matrix_token }}
+        MATRIX_ROOM: ${{ inputs.matrix_room }}
+        MATRIX_HOME_SERVER: ${{ inputs.matrix_home_server }}
+        EMAIL: ${{ inputs.email }}
+        EMAIL_PASSWORD: ${{ inputs.email_password }}
+        EMAIL_SMTP_SERVER: ${{ inputs.email_smtp_server }}
+        EMAIL_SMTP_PORT: ${{ inputs.email_smtp_port }}
+        VOTE_NOTICE_EMAIL: ${{ inputs.vote_notice_email }}
+        VOTE_DIRECTORY: ${{ inputs.vote_directory }}

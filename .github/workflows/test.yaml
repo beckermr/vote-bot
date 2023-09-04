@@ -43,5 +43,10 @@ jobs:
         env:
           MATRIX_TOKEN: ${{ secrets.MATRIX_TOKEN }}
           MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
+          MATRIX_HOME_SERVER: "https://matrix-client.matrix.org"
           EMAIL: ${{ secrets.EMAIL }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_SMTP_SERVER: smtp.gmail.com
+          EMAIL_SMTP_PORT: 587
+          VOTE_NOTICE_EMAIL: becker.mr@gmail.com
+          VOTE_DIRECTORY: votes

@@ -25,14 +25,17 @@ Vote/candidate information:
 """
 
 
-def send_email_message(body, title, dest):
+def send_email_message(body, title):
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = title
     msg['From'] = os.environ["EMAIL"]
-    msg['To'] = dest
+    msg['To'] = os.environ["VOTE_NOTICE_EMAIL"]
 
-    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s = smtplib.SMTP(
+        os.environ["EMAIL_SMTP_SERVER"],
+        int(os.environ["EMAIL_SMTP_PORT"]),
+    )
     s.starttls()
     s.login(os.environ["EMAIL"], os.environ["EMAIL_PASSWORD"])
     s.send_message(msg)
@@ -44,7 +47,7 @@ def send_matrix_message(msg):
     from matrix_client.api import MatrixHttpApi
 
     matrix = MatrixHttpApi(
-        "https://matrix-client.matrix.org",
+        os.environ["MATRIX_HOME_SERVER"],
         token=os.environ["MATRIX_TOKEN"]
     )
     matrix.send_message(os.environ["MATRIX_ROOM"], "@room\n\n" + msg)
@@ -85,12 +88,11 @@ def process_config(config):
             blurb=config["blurb"]
         )
         send_matrix_message(msg)
-        dest = "becker.mr@gmail.com"
-        send_email_message(msg, title, dest)
+        send_email_message(msg, title)
 
 
 if __name__ == "__main__":
-    votes = glob.glob("votes/*.yaml")
+    votes = glob.glob(os.path.join(os.environ["VOTE_DIRECTORY"], "*.yaml"))
     for vote in votes:
         config = read_config(vote)
         process_config(config)
