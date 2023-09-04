@@ -1,0 +1,6 @@
+name: vote-bot
+channels:
+  - conda-forge
+dependencies:
+  - matrix_client
+  - pyyaml
