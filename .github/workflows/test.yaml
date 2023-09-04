@@ -45,4 +45,4 @@ jobs:
           vote_directory: votes
           vote_defaults: |
             org: conda-forge
-            duration: 10
+            duration: 0.000115740741

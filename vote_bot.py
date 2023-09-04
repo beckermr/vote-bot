@@ -82,7 +82,7 @@ def read_config(fname):
 
 def process_config(config):
     start_time = config["start_time"]
-    duration = config["duration"]
+    duration = int(config["duration"] * ONE_DAY)
 
     end_time = start_time + duration
     midpoint = start_time + duration / 2
@@ -137,7 +137,10 @@ if __name__ == "__main__":
             print(
                 "processing vote in file %s:\n%s" % (
                     vote,
-                    yaml.dump(_config, default_flow_style=False, indent=2)
+                    textwrap.indent(
+                        yaml.dump(_config, default_flow_style=False, indent=2),
+                        "    ",
+                    ),
                 ),
                 flush=True,
             )
