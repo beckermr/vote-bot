@@ -11,7 +11,6 @@ ONE_DAY = 86400
 def send_email_message(msg, title, dest):
     msg = EmailMessage()
     msg.set_content(msg)
-
     msg['Subject'] = title
     msg['From'] = os.environ["EMAIL"]
     msg['To'] = dest
