@@ -8,6 +8,23 @@ from email.message import EmailMessage
 ONE_DAY = 86400
 
 
+MSG_TEMPLATE = """\
+Hello!
+
+I am the friendly conda-forge-daemon vote bot. :)
+
+The vote '{title}' {timing}! Please check your email for instructions.
+
+See below for more information about this vote.
+
+Cheers,
+conda-forge-daemon vote bot
+
+Vote/candidate information:
+{blurb}
+"""
+
+
 def send_email_message(body, title, dest):
     msg = EmailMessage()
     msg.set_content(body)
@@ -30,7 +47,7 @@ def send_matrix_message(msg):
         "https://matrix-client.matrix.org",
         token=os.environ["MATRIX_TOKEN"]
     )
-    matrix.send_message(os.environ["MATRIX_ROOM"], msg)
+    matrix.send_message(os.environ["MATRIX_ROOM"], "@room " + msg)
 
 
 def read_config(fname):
@@ -49,32 +66,24 @@ def process_config(config):
     curr_time = time.time()
 
     # get message to send
-    msg = None
+    title = None
+    timing = None
     if curr_time - start_time >= 0 and curr_time - start_time <= 1.5 * ONE_DAY:
-        msg = """\
-@room Hello! I am the friendly conda-forge-daemon vote bot. :)
-
-The vote '{title}' has started! Please check your email for instructions.
-""".format(title=config["title"])
         title = "Vote started: %s" % config["title"]
+        timing = "has started"
     elif curr_time - midpoint >= 0 and curr_time - midpoint <= 1.5 * ONE_DAY:
-        msg = """\
-@room Hello! I am the friendly conda-forge-daemon vote bot. :)
-
-The vote '{title}' is half-way done! If you have not yet voted, please
-check your email for instructions and vote!
-""".format(title=config["title"])
         title = "Vote half-way done: %s" % config["title"]
+        timing = "is half-way done"
     elif end_time - curr_time <= 1.5 * ONE_DAY and end_time >= curr_time:
-        msg = """\
-@room Hello! I am the friendly conda-forge-daemon vote bot. :)
-
-The vote '{title}' is will end in approximately one day! If you have not
-yet voted, please check your email for instructions and vote!
-""".format(title=config["title"])
         title = "Vote ending soon: %s" % config["title"]
+        timing = "will end in approximately one dat"
 
-    if msg is not None:
+    if title is not None and timing is not None:
+        msg = MSG_TEMPLATE.format(
+            title=title,
+            timing=timing,
+            blurb=config["blurb"]
+        )
         send_matrix_message(msg)
         dest = "becker.mr@gmail.com"
         send_email_message(msg, title, dest)
