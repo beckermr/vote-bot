@@ -134,4 +134,5 @@ if __name__ == "__main__":
             config = read_config(vote)
             _config = copy.deepcopy(default_config)
             _config.update(config)
+            print(_config, config, default_config, flush=True)
             process_config(_config)
