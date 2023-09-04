@@ -3,6 +3,7 @@ import time
 import yaml
 import glob
 import smtplib
+import textwrap
 from email.message import EmailMessage
 
 ONE_DAY = 86400
@@ -26,6 +27,22 @@ Vote details:
 
 
 def send_email_message(body, title):
+    print(
+        """\
+sending email message:
+    from: %s
+    to: %s
+    subject: %s
+    content:
+%s
+""" % (
+            os.environ["EMAIL"],
+            os.environ["VOTE_NOTICE_EMAIL"],
+            title,
+            textwrap.indent(body, "        "),
+        ),
+        flush=True,
+    )
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = title
@@ -43,14 +60,17 @@ def send_email_message(body, title):
 
 
 def send_matrix_message(msg):
-    print("Sending matrix message: %s" % msg)
+    print(
+        "sending matrix message:\n%s" % textwrap.indent(msg, "    "),
+        flush=True,
+    )
     from matrix_client.api import MatrixHttpApi
 
     matrix = MatrixHttpApi(
         os.environ["MATRIX_HOME_SERVER"],
         token=os.environ["MATRIX_TOKEN"]
     )
-    matrix.send_message(os.environ["MATRIX_ROOM"], "@room\n\n" + msg)
+    matrix.send_message(os.environ["MATRIX_ROOM"], msg)
 
 
 def read_config(fname):
