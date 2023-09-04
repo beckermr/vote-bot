@@ -111,14 +111,14 @@ def process_config(config):
             salutation=" @room",
             title=config["title"],
             timing=timing,
-            blurb=config["details"],
+            details=config["details"],
         )
         send_matrix_message(msg)
         msg = MSG_TEMPLATE.format(
             salutation="",
             title=config["title"],
             timing=timing,
-            blurb=config["details"],
+            details=config["details"],
         )
         send_email_message(msg, title)
 
@@ -134,5 +134,11 @@ if __name__ == "__main__":
             config = read_config(vote)
             _config = copy.deepcopy(default_config)
             _config.update(config)
-            print(_config, config, default_config, flush=True)
+            print(
+                "processing vote in file %s:\n%s" % (
+                    vote,
+                    yaml.dump(_config, default_flow_style=False, indent=2)
+                ),
+                flush=True,
+            )
             process_config(_config)
