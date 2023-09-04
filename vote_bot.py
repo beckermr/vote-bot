@@ -47,7 +47,7 @@ def send_matrix_message(msg):
         "https://matrix-client.matrix.org",
         token=os.environ["MATRIX_TOKEN"]
     )
-    matrix.send_message(os.environ["MATRIX_ROOM"], "@room " + msg)
+    matrix.send_notice(os.environ["MATRIX_ROOM"], "@room\n" + msg)
 
 
 def read_config(fname):
