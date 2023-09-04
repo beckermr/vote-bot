@@ -83,7 +83,7 @@ def process_config(config):
 
     if title is not None and timing is not None:
         msg = MSG_TEMPLATE.format(
-            title=title,
+            title=config["title"],
             timing=timing,
             blurb=config["blurb"]
         )
