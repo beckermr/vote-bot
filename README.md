@@ -46,7 +46,6 @@ Each vote is a YAML file with the contents:
 
 ```yaml
 org: conda-forge  # name of org holding the vote
-
 start_time:  # unix timestamp of when vote starts
             # make via python -c "import time; print(time.time())"
 duration: 10  # duration of vote in days
