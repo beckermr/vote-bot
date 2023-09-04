@@ -44,13 +44,13 @@ jobs:
 
 Each vote is a YAML file with the contents:
 
-    ```yaml
-    org: conda-forge  # name of org holding the vote
+```yaml
+org: conda-forge  # name of org holding the vote
 
-    start_time:  # unix timestamp of when vote starts
-                # make via python -c "import time; print(time.time())"
-    duration: 10  # duration of vote in days
-    title: "Vote to add foo to conda-forge"  # title of vote
-    description: |  # description of vote
-    This is a vote to add foo to conda-forge.  Please vote yes or no.
-    ```
+start_time:  # unix timestamp of when vote starts
+            # make via python -c "import time; print(time.time())"
+duration: 10  # duration of vote in days
+title: "Vote to add foo to conda-forge"  # title of vote
+description: |  # description of vote
+This is a vote to add foo to conda-forge.  Please vote yes or no.
+```
