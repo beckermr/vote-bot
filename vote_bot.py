@@ -2,6 +2,7 @@ import os
 import time
 import yaml
 import glob
+import copy
 import smtplib
 import textwrap
 from email.message import EmailMessage
@@ -21,8 +22,8 @@ See below for more information about this vote.
 Cheers,
 conda-forge-daemon vote bot
 
-Vote details:
-{blurb}
+vote details:
+{details}
 """
 
 
@@ -88,17 +89,21 @@ def process_config(config):
 
     curr_time = time.time()
 
+    org = config.get("org", "")
+    if org != "":
+        org = org + " "
+
     # get message to send
     title = None
     timing = None
     if curr_time - start_time >= 0 and curr_time - start_time <= 1.5 * ONE_DAY:
-        title = "Vote started: %s" % config["title"]
+        title = "%svote started: %s" % (org, config["title"])
         timing = "has started"
     elif curr_time - midpoint >= 0 and curr_time - midpoint <= 1.5 * ONE_DAY:
-        title = "Vote half-way done: %s" % config["title"]
+        title = "%svote half-way done: %s" % (org, config["title"])
         timing = "is half-way done"
     elif end_time - curr_time <= 1.5 * ONE_DAY and end_time >= curr_time:
-        title = "Vote ending soon: %s" % config["title"]
+        title = "%svote ending soon: %s" % (org, config["title"])
         timing = "will end in approximately one dat"
 
     if title is not None and timing is not None:
@@ -106,20 +111,27 @@ def process_config(config):
             salutation=" @room",
             title=config["title"],
             timing=timing,
-            blurb=config["blurb"]
+            blurb=config["details"],
         )
         send_matrix_message(msg)
         msg = MSG_TEMPLATE.format(
             salutation="",
             title=config["title"],
             timing=timing,
-            blurb=config["blurb"]
+            blurb=config["details"],
         )
         send_email_message(msg, title)
 
 
 if __name__ == "__main__":
     votes = glob.glob(os.path.join(os.environ["VOTE_DIRECTORY"], "*.yaml"))
+
+    if "VOTE_DEFAULTS" in os.environ:
+        default_config = yaml.safe_load(os.environ["VOTE_DEFAULTS"])
+
     for vote in votes:
-        config = read_config(vote)
-        process_config(config)
+        if os.path.basename(vote) != "defaults.yaml":
+            config = read_config(vote)
+            _config = copy.deepcopy(default_config)
+            _config.update(config)
+            process_config(_config)

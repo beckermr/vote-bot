@@ -27,8 +27,7 @@ jobs:
 
           echo "title: Matt for conda-forge Bot Master
           start_time: ${start}
-          duration: 10
-          blurb: |
+          details: |
             Matt is a great guy, and he should be the bot master for conda-forge.
             ^ LOL copilot wrote this for me!
           " > votes/test.yaml
@@ -44,3 +43,6 @@ jobs:
           email_smtp_port: 587
           vote_notice_email: becker.mr@gmail.com
           vote_directory: votes
+          vote_defaults: |
+            org: conda-forge
+            duration: 10
