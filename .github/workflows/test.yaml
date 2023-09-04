@@ -9,6 +9,10 @@ on:
 env:
   PY_COLORS: "1"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   tests:
     name: tests
@@ -34,4 +38,8 @@ jobs:
       - name: test
         shell: bash -l {0}
         run: |
+          python make_test_vote.py
           python vote_bot.py
+        env:
+          MATRIX_TOKEN: ${{ secrets.MATRIX_TOKEN }}
+          MATRIX_ROOM: ${{ secrets.MATRIX_ROOM }}
