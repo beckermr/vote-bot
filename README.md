@@ -56,4 +56,15 @@ description: |  # description of vote
 
 ## Configuring Matrix
 
+To find the Matrix API token:
 
+1. login to your account using the element web interface
+2. open the settings menu
+3. navigate to the "Help & About" pane
+4. Scroll to the "Advanced" section
+5. Copy your API token
+
+## Configuring Email
+
+Email authentication is done using a username and password. If you use two-factor with gmail, 
+you may need to generate an [app password](https://support.google.com/mail/answer/185833?hl=en).
