@@ -61,8 +61,14 @@ To find the Matrix API token:
 1. login to your account using the element web interface
 2. open the settings menu
 3. navigate to the "Help & About" pane
-4. Scroll to the "Advanced" section
-5. Copy your API token
+4. scroll to the "Advanced" section
+5. copy your API token
+
+The matrix room is specified by its ID. To get the ID of the room:
+
+1. navidate to the room settings menu
+2. go to the "Advanced" pane
+3. copy the "internal ID"
 
 ## Configuring Email
 
