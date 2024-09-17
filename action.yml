@@ -35,16 +35,22 @@ runs:
   using: "composite"
   steps:
     - name: setup python
-      uses: mamba-org/setup-micromamba@v1
+      uses: actions/setup-python@v5
       with:
-        environment-file: ${{ github.action_path }}/environment.yml
-        init-shell: bash
-        cache-environment: true
-        environment-name: vote-bot
-        post-cleanup: 'all'
-        condarc: |
-          channels:
-            - conda-forge
+        python-version: '3.11'
+      # uses: mamba-org/setup-micromamba@v1
+      # with:
+      #   environment-file: ${{ github.action_path }}/environment.yml
+      #   init-shell: bash
+      #   cache-environment: true
+      #   environment-name: vote-bot
+      #   post-cleanup: 'all'
+      #   condarc: |
+      #     channels:
+      #       - conda-forge
+    - name: install dependencies
+      run: |
+        pip install matrix_client pyyaml
 
     - name: run vote bot
       shell: bash -l {0}
