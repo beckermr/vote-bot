@@ -38,7 +38,7 @@ runs:
   using: "composite"
   steps:
     - name: setup python
-      uses: actions/setup-python@f677139
+      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3
       with:
         python-version: '3.11'
 
