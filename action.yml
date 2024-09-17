@@ -1,11 +1,14 @@
 name: conda-forge-vote-bot
 description: Sends a series of notices for conda-forge-style votes.
 inputs:
-  matrix_token:
-    description: 'token for matrix user to that sends the vote reminder'
+  matrix_username:
+    description: 'username for matrix user to that sends the vote reminder'
     required: true
-  matrix_room:
-    description: 'destination room for the vote reminder'
+  matrix_password:
+    description: 'password for matrix user to that sends the vote reminder'
+    required: true
+  matrix_room_id:
+    description: 'destination room id for the vote reminder'
     required: true
   matrix_home_server:
     description: 'home server for the matrix user'
@@ -49,8 +52,9 @@ runs:
       run: |
         python ${{ github.action_path }}/vote_bot.py
       env:
-        MATRIX_TOKEN: ${{ inputs.matrix_token }}
-        MATRIX_ROOM: ${{ inputs.matrix_room }}
+        MATRIX_USERNAME: ${{ inputs.matrix_username }}
+        MATRIX_PASSWORD: ${{ inputs.matrix_password }}
+        MATRIX_ROOM_ID: ${{ inputs.matrix_room_id }}
         MATRIX_HOME_SERVER: ${{ inputs.matrix_home_server }}
         EMAIL: ${{ inputs.email }}
         EMAIL_PASSWORD: ${{ inputs.email_password }}
