@@ -53,3 +53,16 @@ title: "Vote to add foo to conda-forge"  # title of vote
 description: |  # description of vote
   This is a vote to add foo to conda-forge.  Please vote yes or no.
 ```
+
+## Configuring Matrix
+
+The matrix room is specified by its ID. To get the ID of the room:
+
+1. navigate to the room settings menu
+2. go to the "Advanced" pane
+3. copy the "internal ID"
+
+## Configuring Email
+
+Email authentication is done using a username and password. If you use two-factor with Gmail,
+you may need to generate an [app password](https://support.google.com/mail/answer/185833?hl=en).

@@ -1,5 +1,6 @@
 import os
 import time
+import sys
 import yaml
 import glob
 import copy
@@ -13,14 +14,14 @@ ONE_DAY = 86400
 MSG_TEMPLATE = """\
 Hello{salutation}!
 
-I am the friendly conda-forge-daemon vote bot. :)
+I am the friendly conda vote bot. :)
 
 The vote '{title}' {timing}! Please check your email for instructions.
 
 See below for more information about this vote.
 
 Cheers,
-conda-forge-daemon vote bot
+conda vote bot
 
 vote details:
 {details}
@@ -65,13 +66,23 @@ def send_matrix_message(msg):
         "sending matrix message:\n%s" % textwrap.indent(msg, "    "),
         flush=True,
     )
-    from matrix_client.api import MatrixHttpApi
-
-    matrix = MatrixHttpApi(
-        os.environ["MATRIX_HOME_SERVER"],
-        token=os.environ["MATRIX_TOKEN"]
+    from matrix_client.client import MatrixClient
+    client = MatrixClient(os.environ["MATRIX_HOME_SERVER"])
+    token = client.login(
+        username=os.environ["MATRIX_USERNAME"],
+        password=os.environ["MATRIX_PASSWORD"],
     )
-    matrix.send_message(os.environ["MATRIX_ROOM"], msg)
+    if (
+        "GITHUB_ACTIONS" in os.environ
+        and os.environ["GITHUB_ACTIONS"] == "true"
+    ):
+        sys.stdout.flush()
+        print(f"::add-mask::{token}", flush=True)
+
+    client.api.send_message(
+        os.environ["MATRIX_ROOM_ID"],
+        msg,
+    )
 
 
 def read_config(fname):
@@ -104,7 +115,7 @@ def process_config(config):
         timing = "is half-way done"
     elif end_time - curr_time <= 1.5 * ONE_DAY and end_time >= curr_time:
         title = "%svote ending soon: %s" % (org, config["title"])
-        timing = "will end in approximately one dat"
+        timing = "will end in approximately one day"
 
     if title is not None and timing is not None:
         msg = MSG_TEMPLATE.format(
