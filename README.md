@@ -66,11 +66,11 @@ To find the Matrix API token:
 
 The matrix room is specified by its ID. To get the ID of the room:
 
-1. navidate to the room settings menu
+1. navigate to the room settings menu
 2. go to the "Advanced" pane
 3. copy the "internal ID"
 
 ## Configuring Email
 
-Email authentication is done using a username and password. If you use two-factor with gmail, 
+Email authentication is done using a username and password. If you use two-factor with Gmail,
 you may need to generate an [app password](https://support.google.com/mail/answer/185833?hl=en).

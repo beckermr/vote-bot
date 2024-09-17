@@ -13,14 +13,14 @@ ONE_DAY = 86400
 MSG_TEMPLATE = """\
 Hello{salutation}!
 
-I am the friendly conda-forge-daemon vote bot. :)
+I am the friendly conda vote bot. :)
 
 The vote '{title}' {timing}! Please check your email for instructions.
 
 See below for more information about this vote.
 
 Cheers,
-conda-forge-daemon vote bot
+conda vote bot
 
 vote details:
 {details}
@@ -104,7 +104,7 @@ def process_config(config):
         timing = "is half-way done"
     elif end_time - curr_time <= 1.5 * ONE_DAY and end_time >= curr_time:
         title = "%svote ending soon: %s" % (org, config["title"])
-        timing = "will end in approximately one dat"
+        timing = "will end in approximately one day"
 
     if title is not None and timing is not None:
         msg = MSG_TEMPLATE.format(
