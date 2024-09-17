@@ -27,8 +27,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: beckermr/vote-bot@main
         with:
-          matrix_token: ${{ secrets.MATRIX_TOKEN }}
-          matrix_room: ${{ secrets.MATRIX_ROOM }}
+          matrix_username: ${{ secrets.MATRIX_USERNAME }}
+          matrix_password: ${{ secrets.MATRIX_PASSWORD }}
+          matrix_room_id: ${{ secrets.MATRIX_ROOM_ID }}
           matrix_home_server: "https://matrix-client.matrix.org"
           email: <email to send vote notices>
           email_password: ${{ secrets.EMAIL_PASSWORD }}
