@@ -49,6 +49,7 @@ runs:
       #     channels:
       #       - conda-forge
     - name: install dependencies
+      shell: bash
       run: |
         pip install matrix_client pyyaml
 
